@@ -1,0 +1,2 @@
+[crate_roots]
+nfinic_erc20 = "src"
