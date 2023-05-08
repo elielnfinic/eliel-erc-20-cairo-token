@@ -125,6 +125,7 @@ mod ERC20{
     }
 }
 
+
 #[cfg(test)]
 mod tests{
     use integer::u256;
@@ -147,8 +148,21 @@ mod tests{
         ERC20::constructor(name, symbol, decimals, initial_supply, account);
 
         let res_name = ERC20::get_name();
+        assert(res_name == 'NFINIC', 'Name does not match');
 
-        assert(res_name == 'NFINIC', 'name is not correct');
+        let res_decimals = ERC20::get_decimals();
+        assert(res_decimals == 18_u8, 'decimals do not match');
+
+        let res_total_supply = ERC20::get_total_supply();
+        assert(res_total_supply == u256_from_felt252(2000), 'total supply does not match');
+
+        let res_account_balance = ERC20::balance_of(account);
+        assert(res_account_balance == res_total_supply, 'account has supply');
+    }
+
+    #[test]
+    #[available_gas(2000000)]
+    fn test_transfer(){
 
     }
 }

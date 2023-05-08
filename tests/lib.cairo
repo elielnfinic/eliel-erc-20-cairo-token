@@ -1,4 +1,2 @@
-
-fn test_constructor(){
-
-}
+#[cfg(test)]
+mod integration_tests;
