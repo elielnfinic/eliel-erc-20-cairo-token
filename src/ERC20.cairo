@@ -137,7 +137,7 @@ mod tests{
     use super::ERC20;
 
     #[test]
-    #[available_gas(20000000)]
+    #[available_gas(2000000)]
     fn test_constructor(){
         let initial_supply : u256 = u256_from_felt252(2000);
         let account: ContractAddress = contract_address_const::<1>();
@@ -158,11 +158,5 @@ mod tests{
 
         let res_account_balance = ERC20::balance_of(account);
         assert(res_account_balance == res_total_supply, 'account has supply');
-    }
-
-    #[test]
-    #[available_gas(2000000)]
-    fn test_transfer(){
-
     }
 }
