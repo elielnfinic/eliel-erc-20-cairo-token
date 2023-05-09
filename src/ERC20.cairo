@@ -142,13 +142,13 @@ mod tests{
         let initial_supply : u256 = u256_from_felt252(2000);
         let account: ContractAddress = contract_address_const::<1>();
         let decimals : u8 = 18_u8;
-        let name : felt252 = 'NFINIC';
-        let symbol : felt252 = 'NFN';
+        let name : felt252 = 'ELIEL';
+        let symbol : felt252 = 'EL';
 
         ERC20::constructor(name, symbol, decimals, initial_supply, account);
 
         let res_name = ERC20::get_name();
-        assert(res_name == 'NFINIC', 'Name does not match');
+        assert(res_name == 'ELIEL', 'Name does not match');
 
         let res_decimals = ERC20::get_decimals();
         assert(res_decimals == 18_u8, 'decimals do not match');
@@ -159,4 +159,5 @@ mod tests{
         let res_account_balance = ERC20::balance_of(account);
         assert(res_account_balance == res_total_supply, 'account has supply');
     }
+
 }
