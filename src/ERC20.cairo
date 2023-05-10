@@ -5,6 +5,9 @@ mod ERC20{
     use starknet::contract_address_const;
     use starknet::ContractAddress;
     use starknet::contract_address::ContractAddressZeroable;
+    use integer::u256;
+    use integer::u256_from_felt252;
+    use traits::TryInto; 
 
     struct Storage{
         name : felt252,
@@ -21,22 +24,23 @@ mod ERC20{
     #[event]
     fn Approval(owner: ContractAddress, spender: ContractAddress, value: u256){}
 
-    #[contructor]
-    fn constructor(
-        name_: felt252,
-        symbol_: felt252,
-        decimals_: u8,
-        initialSupply_: u256,
-        recipient: ContractAddress
-    ){
-       name::write(name_);
-       symbol::write(symbol_);
-       decimals::write(decimals_);
-       total_supply::write(initialSupply_);
-       assert(!recipient.is_zero(), 'ERC20: mint to 0 address');
-       total_supply::write(initialSupply_);
-       balances::write(recipient, initialSupply_);
-       Transfer(contract_address_const::<0>(), recipient, initialSupply_);
+    #[constructor]
+    fn constructor(){        
+        let name_ : felt252 = 'ELIEL';
+        let symbol_ : felt252 = 'EL';
+        let decimals_ : u8 = 4_u8;
+        let initialSupply_ : u256 = u256_from_felt252(10000000000);
+        //let acc = 0x06D78dC7ea54CF77eeD141F423f6017Dd61fbd2b6bD429Facdf5d4803353063f;
+        let recipient : ContractAddress = get_caller_address(); //acc.try_into().unwrap();
+
+        name::write(name_);
+        symbol::write(symbol_);
+        decimals::write(decimals_);
+        total_supply::write(initialSupply_);
+        assert(!recipient.is_zero(), 'ERC20: mint to 0 addres');
+        total_supply::write(initialSupply_);
+        balances::write(recipient, initialSupply_);
+        Transfer(contract_address_const::<0>(), recipient, initialSupply_);
     }
 
     #[view]
@@ -101,7 +105,7 @@ mod ERC20{
     }
 
     fn transfer_helper(sender : ContractAddress, recipient : ContractAddress, amount : u256){
-        assert(!sender.is_zero(), 'ERC20: transfer from 0');
+        assert(!sender.is_zero(), 'ERC20: transfer from 0 ');
         assert(!recipient.is_zero(), 'ERC20: transfer to 0');
         // assert(balances::read(sender) >= amount, 'ERC20: sender does not have enough funds');
         balances::write(sender, balances::read(sender) - amount);
